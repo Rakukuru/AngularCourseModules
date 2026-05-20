@@ -1,0 +1,26 @@
+@if (InvestmentResults.length === 0) {
+    <p class="fallback">No investment results to display. Please enter your investment details and calculate the results.</p>
+} @else {
+    <table>
+    <thead>
+        <tr>
+        <th>Year</th>
+        <th>Investment Value</th>
+        <th>Interest (Year)</th>
+        <th>Total Interest</th>
+        <th>Invested Capital</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(result of InvestmentResults; track result.year) {
+            <tr>
+            <td>{{ result.year }}</td>
+            <td>{{ result.investmentValue | currency:"EUR" }}</td>
+            <td>{{ result.interestYear | currency:"EUR" }}</td>
+            <td>{{ result.interestTotal | currency:"EUR" }}</td>
+            <td>{{ result.investedCapital | currency:"EUR" }}</td>
+            </tr>
+        }
+    </tbody>  
+    </table>
+}

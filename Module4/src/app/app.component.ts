@@ -1,8 +1,18 @@
 import { Component } from '@angular/core';
+import { HeaderComponent } from './header/header.component';
+import { UserInput, UserInputComponent } from "./user-input/user-input.component";
+import { InvestmentResultsComponent } from "./investment-results/investment-results.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
+  imports: [HeaderComponent, UserInputComponent, InvestmentResultsComponent],
 })
-export class AppComponent {}
+export class AppComponent {
+  userInput!: UserInput;
+  
+  onCalculateClicked(userInput: UserInput) {
+    this.userInput = userInput;
+  }
+}
