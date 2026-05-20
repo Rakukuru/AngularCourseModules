@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-export interface UserInput {
+export interface InvestmentInput {
   initialInvestment: number;
   annualContribution: number;
   expectedReturn: number;
@@ -16,23 +16,24 @@ export interface UserInput {
   styleUrl: './user-input.component.css'
 })
 export class UserInputComponent {
-  initialInvestment: number = 0;
-  annualContribution: number = 0;
-  expectedReturn: number = 5;
-  investmentDuration: number = 10;
-  @Output() calculateClicked = new EventEmitter<UserInput>();
+  initialInvestment = signal(0);
+  annualContribution = signal(0);
+  expectedReturn = signal(5);
+  investmentDuration = signal(10);
+  calculateClicked = output<InvestmentInput>();
+  // @Output() calculateClicked = new EventEmitter<InvestmentInput>();
 
   OnCalculateClicked() {
     this.calculateClicked.emit({
-      initialInvestment: this.initialInvestment,
-      annualContribution: this.annualContribution,
-      expectedReturn: this.expectedReturn,
-      investmentDuration: this.investmentDuration
+      initialInvestment: this.initialInvestment(),
+      annualContribution: this.annualContribution(),
+      expectedReturn: this.expectedReturn(),
+      investmentDuration: this.investmentDuration()
     });
 
-    this.initialInvestment = 0;
-    this.annualContribution = 0;
-    this.expectedReturn = 5;
-    this.investmentDuration = 10;
+    this.initialInvestment.set(0);
+    this.annualContribution.set(0);
+    this.expectedReturn.set(5);
+    this.investmentDuration.set(10);
   }
 }

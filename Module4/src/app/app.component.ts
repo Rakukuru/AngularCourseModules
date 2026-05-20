@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
-import { UserInput, UserInputComponent } from "./user-input/user-input.component";
+import { InvestmentInput, UserInputComponent } from "./user-input/user-input.component";
 import { InvestmentResultsComponent } from "./investment-results/investment-results.component";
 
 @Component({
@@ -10,9 +10,9 @@ import { InvestmentResultsComponent } from "./investment-results/investment-resu
   imports: [HeaderComponent, UserInputComponent, InvestmentResultsComponent],
 })
 export class AppComponent {
-  userInput!: UserInput;
+  userInput!: InvestmentInput;
   
-  onCalculateClicked(userInput: UserInput) {
+  onCalculateClicked(userInput: InvestmentInput) {
     this.userInput = userInput;
   }
 }

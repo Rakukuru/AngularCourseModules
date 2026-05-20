@@ -1,6 +1,6 @@
-import { CommonModule, CurrencyPipe} from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { UserInput } from "../user-input/user-input.component";
+import { CurrencyPipe} from '@angular/common';
+import { Component, Input, input } from '@angular/core';
+import { InvestmentInput } from "../user-input/user-input.component";
 
 interface InvestmentResult {
   year: number;
@@ -18,23 +18,25 @@ interface InvestmentResult {
   styleUrl: './investment-results.component.css'
 })
 export class InvestmentResultsComponent {
-  private _userInput?: UserInput;
+  private _userInput?: InvestmentInput;
+
+  results = input<InvestmentResult[]>();
 
   @Input()
-  set userInput(value: UserInput | undefined) {
+  set userInput(value: InvestmentInput | undefined) {
     if (value) {
       this._userInput = value;
       this.calculateInvestmentResults(value);
     }
   }
 
-  get userInput(): UserInput | undefined {
+  get userInput(): InvestmentInput | undefined {
     return this._userInput;
   }
 
   InvestmentResults: InvestmentResult[] = [];
 
-  calculateInvestmentResults(userInput: UserInput) {
+  calculateInvestmentResults(userInput: InvestmentInput) {
     const results: InvestmentResult[] = [];
     let currentInvestment = userInput.initialInvestment;
     let investedCapital = userInput.initialInvestment;
