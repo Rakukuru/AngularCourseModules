@@ -5,6 +5,7 @@ import { PlacesComponent } from '../places.component';
 import { PlacesContainerComponent } from '../places-container/places-container.component';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/internal/operators/map';
+import { PlacesService } from '../places.service';
 
 @Component({
   selector: 'app-available-places',
@@ -17,15 +18,14 @@ export class AvailablePlacesComponent implements OnInit {
   places = signal<Place[] | undefined>(undefined);
   isFetching = signal(false);
   error = signal('');
-  private httpClient = inject(HttpClient);
+  // private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
+  private placesService = inject(PlacesService);
 
   ngOnInit() {
     this.isFetching.set(true);
     //The call will return a json that has a "places" key and inside it, a structure that follows the same "Place" structure we have!
-    const subscription = this.httpClient
-      .get<{ places: Place[] }>('http://localhost:3000/places')
-      .pipe(map((resData) => resData.places)) //Only get the places array from the response data
+    const subscription = this.placesService.loadAvailablePlaces()
       .subscribe({
         next: (resData2) => {
           console.log(resData2);
@@ -46,12 +46,22 @@ export class AvailablePlacesComponent implements OnInit {
   }
 
   onSelectPlace(place: Place) {
-    this.httpClient.put(`http://localhost:3000/user-places/`, {
-      placeId: place.id,
-    }).subscribe({
+    const subscription = this.placesService.addPlaceToUserPlaces(place).subscribe({
       next: (resData) => {
         console.log('Place selected successfully:', resData);
       }
     });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
+
+    // this.httpClient.put(`http://localhost:3000/user-places/`, {
+    //   placeId: place.id,
+    // }).subscribe({
+    //   next: (resData) => {
+    //     console.log('Place selected successfully:', resData);
+    //   }
+    // });
   }
 }
