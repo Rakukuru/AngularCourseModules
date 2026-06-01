@@ -1,3 +1,16 @@
-<app-places-container title="Your Favorite Places">
-  <p>Todo...</p>
+<app-places-container title="Your favourite places">
+  @if (isFetching() && !error()) {
+    <p class="fallback-text">Fetching your favourite places...</p>
+  }
+  @if (error()) {
+    <p class="fallback-text">
+      An error occurred while fetching your favorite places: {{ error() }}
+    </p>
+  }
+
+  @if (places()) {
+    <app-places [places]="places()!" />
+  } @else if (places()?.length === 0) {
+    <p class="fallback-text">Unfortunately, your favorite places could not be found.</p>
+  }
 </app-places-container>
