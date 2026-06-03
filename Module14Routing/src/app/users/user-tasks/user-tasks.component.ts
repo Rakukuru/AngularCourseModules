@@ -52,3 +52,10 @@ export const resolveUserName: ResolveFn<string> = ( //Save function into variabl
     const userName = usersService.users.find(u => u.id === userId)?.name || '';
     return userName;
 }
+
+export const resolveTitle: ResolveFn<string> = (
+  activatedRoute,
+  routerState
+) => {
+  return resolveUserName(activatedRoute, routerState) + '\'s Tasks';
+}

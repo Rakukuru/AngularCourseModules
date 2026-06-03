@@ -1,20 +1,27 @@
 import { Routes } from '@angular/router';
-import { TasksComponent } from '../tasks/tasks.component';
-import { NewTaskComponent } from '../tasks/new-task/new-task.component';
+
+import { TasksComponent, resolveUserTasks } from '../tasks/tasks.component';
+import { canLeaveEditPage, NewTaskComponent } from '../tasks/new-task/new-task.component';
 
 export const usersRoutes: Routes = [
   {
     path: '',
     redirectTo: 'tasks',
-    pathMatch: 'prefix', //Prefix: checks if url starts with 'users/:userId'
-  }, //Full: check if whole url is //<your-domain>/users/<uid>
-  // EFFECT: If going to '/<your-domain>/users/<uid>' it redirects to '//<your-domain>/users/<uid>/tasks'
+    pathMatch: 'full',
+  },
   {
-    path: 'tasks', //<your-domain>/users/<uid>/tasks
+    path: 'tasks', // <your-domain>/users/<uid>/tasks
     component: TasksComponent,
+    runGuardsAndResolvers: 'always', // always | paramsOrQueryParamsChange
+    // always: Since TaskComponent is trying to reload the view when triggering onComplete, we need to not only reload on paramsOrQueryParamsChange
+    // paramsOrQueryParamsChange: Without this parameter, it will not update the query Params correctly
+    resolve: {
+      userTasks: resolveUserTasks,
+    },
   },
   {
     path: 'tasks/new',
     component: NewTaskComponent,
+    canDeactivate: [canLeaveEditPage]
   },
 ];
